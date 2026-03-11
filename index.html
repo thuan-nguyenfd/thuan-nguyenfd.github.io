@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --bg: #f8f7f4;
+      --sidebar-bg: #ffffff;
+      --border: #e5e7eb;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .layout {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 38%;
+      min-width: 280px;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 2rem;
+      position: relative;
+    }
+
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: -80px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #dbeafe 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .sidebar::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #e0e7ff 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .avatar-wrap {
+      width: 170px; height: 170px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid var(--accent);
+      box-shadow: 0 8px 30px rgba(37,99,235,0.15);
+      margin-bottom: 1.6rem;
+      animation: fadeDown 0.7s ease both;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .avatar-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-placeholder {
+      font-size: 4rem;
+      color: var(--accent);
+      opacity: 0.4;
+    }
+
+    .links {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.6rem;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      border: 1.5px solid var(--accent);
+      transition: all 0.2s;
+    }
+
+    .links a:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .links span {
+      color: var(--border);
+      font-size: 1.1rem;
+      line-height: 2;
+    }
+
+    .bio {
+      text-align: center;
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 300px;
+      animation: fadeDown 0.9s ease both;
+    }
+
+    .bio p + p { margin-top: 0.9rem; }
+
+    /* ===== MAIN ===== */
+    .main {
+      flex: 1;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 3rem 3.5rem;
+      scroll-behavior: smooth;
+    }
+
+    .main::-webkit-scrollbar { width: 6px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .portfolio-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .portfolio-subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .divider {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 60vh;
+      color: var(--muted);
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.25;
+    }
+
+    .empty-state h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--text);
+      opacity: 0.4;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      font-size: 0.9rem;
+      opacity: 0.5;
+      text-align: center;
+      max-width: 300px;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      html, body { overflow: auto; }
+      .layout { flex-direction: column; height: auto; }
+      .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 2rem 1.5rem; }
+      .main { height: auto; overflow-y: visible; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h1 class="name">Your Name</h1>
+
+      <div class="avatar-wrap">
+        <!--
+          Để thêm ảnh của bạn:
+          1. Đặt file ảnh (vd: avatar.jpg) vào cùng thư mục với index.html
+          2. Thay dòng dưới bằng: <img src="avatar.jpg" alt="Your Name" />
+        -->
+        <span class="avatar-placeholder">👤</span>
+      </div>
+
+      <div class="links">
+        <a href="cv.pdf" target="_blank">Resume</a>
+        <span>|</span>
+        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+      </div>
+
+      <div class="bio">
+        <p>Thêm thông tin giới thiệu bản thân vào đây. Ví dụ: học vấn, công việc hiện tại, lĩnh vực quan tâm.</p>
+        <p>Ví dụ: I am currently a Machine Learning engineer with a focus on NLP and Deep Learning.</p>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+      <h1 class="portfolio-title">Portfolio</h1>
+      <p class="portfolio-subtitle">Projects &amp; work in progress — more coming soon.</p>
+      <hr class="divider"/>
+
+      <div class="empty-state">
+        <div class="empty-icon">🚀</div>
+        <h2>Projects coming soon</h2>
+        <p>Phần này sẽ được bổ sung với các dự án của bạn. Hãy thêm nội dung vào đây!</p>
+      </div>
+
+      <!--
+        =========================================
+        HƯỚNG DẪN THÊM PROJECT SAU NÀY:
+        Uncomment và copy đoạn này để thêm project
+        =========================================
+
+      <section class="project-section">
+        <h2 class="section-title">Natural Language Processing</h2>
+
+        <div class="project-card">
+          <h3 class="project-title">Tên Project</h3>
+          <p class="project-desc">Mô tả ngắn về project của bạn.</p>
+          <a href="https://github.com/..." class="btn-github" target="_blank">
+            View on GitHub
+          </a>
+          <div class="project-details">
+            <p><strong>Feature 1:</strong> Mô tả chi tiết...</p>
+            <p><strong>Feature 2:</strong> Mô tả chi tiết...</p>
+          </div>
+        </div>
+      </section>
+
+      Thêm CSS này vào thẻ <style> bên trên nếu bạn dùng project cards:
+
+      .project-section { margin-bottom: 2.5rem; }
+      .section-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 1.2rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent-soft); }
+      .project-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+      .project-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+      .project-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.8rem; }
+      .btn-github { display: inline-block; background: var(--text); color: white; text-decoration: none; font-size: 0.82rem; padding: 0.35rem 0.9rem; border-radius: 6px; margin-bottom: 1rem; }
+      .project-details p { font-size: 0.9rem; line-height: 1.7; color: var(--text); margin-bottom: 0.4rem; }
+      -->
+    </main>
+
+  </div>
+</body>
+</html>
